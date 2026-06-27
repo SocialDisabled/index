@@ -11,7 +11,14 @@
   box-sizing: border-box;
   font-family: system-ui, sans-serif;
 }
-/* 顶部导航栏 悬浮在最上方 */
+
+body {
+  
+  background: url("photo/1.png") center top / cover no-repeat;
+  background-attachment: fixed; 
+  min-height: 200vh; 
+}
+
 .top-nav{
   position: fixed;
   top: 0;
@@ -33,18 +40,14 @@
 .top-nav a:hover{
   opacity: 1;
 }
-/* 全屏轮播容器 核心fixed视差 */
+
 .slider-box {
   width: 100%;
   height: 100vh;
   overflow: hidden;
   position: relative;
-  /* 关键：背景固定，滚动页面图片不移动 */
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center top;
  }
-/* 图片滑动轨道 */
+
 .slider-wrap {
   width: 800%;
   height: 100%;
@@ -59,9 +62,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background-position: center top;
 }
-/* 渐变遮罩 */
+
 .slider-mask {
   position: absolute;
   left: 0;
@@ -72,7 +74,7 @@
   z-index: 2;
   pointer-events: none;
 }
-/* 左下角宣传文字按钮 */
+
 .slider-text {
   position: absolute;
   left: 8%;
@@ -106,7 +108,7 @@
 .slider-text button:hover{
   background: #ffdfaa;
 }
-/* 左右切换按钮 */
+
 .slider-btn {
   width: 40px;
   height: 60px;
@@ -125,7 +127,7 @@
 }
 .prev { left: 10px; }
 .next { right: 10px; }
-/* 底部小圆点指示器 */
+
 .slider-dots {
   position: absolute;
   bottom: 40px;
@@ -144,13 +146,15 @@
 .dot.active {
   background: #fff;
 }
-/* 页面下方正文内容：上边距=轮播高度，不会顶上去盖住轮播 */
+
 .main-content{
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  min-height: 100vh;
-  margin-top: 100vh;
+  margin: 60px auto 150px;
+  padding: 40px 30px;
+ 
+  background: rgba(255,255,255,0.88);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
 }
 .main-content h6{
   color: #666;
@@ -165,7 +169,7 @@
 </style>
 </head>
 <body>
-<!-- 顶部导航 -->
+
 <div class="top-nav">
   <a href="">游戏</a>
   <a href="">视频</a>
@@ -175,7 +179,7 @@
   <a href="#">获取启动器</a>
 </div>
 
-<!-- 全屏轮播 -->
+
 <div class="slider-box">
   <div class="slider-wrap">
     <div class="slider-item"><img src="photo/1.png" alt="图1"></div>
@@ -187,29 +191,25 @@
     <div class="slider-item"><img src="photo/7.png" alt="图7"></div>
     <div class="slider-item"><img src="photo/8.png" alt="图8"></div>
   </div>
-  <!-- 渐变遮罩 -->
   <div class="slider-mask"></div>
-  <!-- 左下角文字按钮 -->
   <div class="slider-text">
     <p>MC基岩Java互通服务器</p>
     <h2>立即加入游玩</h2>
     <button>了解更多</button>
   </div>
-  <!-- 左右切换按钮 -->
   <button class="slider-btn prev">&lt;</button>
   <button class="slider-btn next">&gt;</button>
-  <!-- 右下角圆点 -->
   <div class="slider-dots"></div>
 </div>
 
-<!-- 页面正文 -->
+
 <div class="main-content">
   <h6>这是一个服务器</h6>
   <h1>这是一个官网</h1>
 </div>
 
 <script>
-// 轮播配置
+
 const total = 8;
 let index = 0;
 const wrap = document.querySelector('.slider-wrap');
@@ -218,7 +218,7 @@ const prevBtn = document.querySelector('.prev');
 const nextBtn = document.querySelector('.next');
 let timer;
 
-// 生成底部圆点
+
 for(let i=0; i<total; i++){
   const dot = document.createElement('span');
   dot.className = 'dot';
@@ -231,37 +231,37 @@ for(let i=0; i<total; i++){
 }
 const dots = document.querySelectorAll('.dot');
 
-// 更新滑动位置和圆点状态
+
 function changeSlide(){
   wrap.style.transform = `translateX(-${index * 100 / total}%)`;
   dots.forEach(d=>d.classList.remove('active'));
   dots[index].classList.add('active');
 }
 
-// 切换下一张
+
 function next(){
   index++;
   if(index >= total) index = 0;
   changeSlide();
 }
-// 切换上一张
+
 function prev(){
   index--;
   if(index < 0) index = total - 1;
   changeSlide();
 }
 
-// 绑定按钮点击
+
 nextBtn.onclick = next;
 prevBtn.onclick = prev;
 
-// 自动轮播 3秒切换
+
 function autoPlay(){
   timer = setInterval(next, 3000);
 }
 autoPlay();
 
-// 鼠标悬停暂停，离开继续
+
 document.querySelector('.slider-box').onmouseenter = ()=> clearInterval(timer);
 document.querySelector('.slider-box').onmouseleave = autoPlay;
 </script>
