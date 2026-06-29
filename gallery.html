@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>服务器图片画廊</title>
+<style>
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+.bg-fixed {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("photo/44.webp") center top / cover no-repeat;
+}
+body {
+  min-height: 100vh;
+  padding: 0 20px;
+  padding-top: 70px;
+}
+
+.top-nav{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  z-index: 999;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.top-nav a{
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  opacity: 0.9;
+}
+.top-nav a:hover{
+  opacity: 1;
+}
+
+.wrap-box{
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+/* 画廊网格：PC一行4列，3行12张；移动端自适应 */
+.gallery-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 24px;
+  background: rgba(255,255,255,0.88);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+}
+.gallery-item{
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 16/12;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease;
+}
+.gallery-item:hover{
+  transform: scale(1.03);
+}
+.gallery-item img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 分页按钮 */
+.pagination{
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+.page-btn{
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  cursor: pointer;
+}
+.page-btn:disabled{
+  background: rgba(0,0,0,0.2);
+  cursor: not-allowed;
+}
+
+/* 响应式：平板2列，手机1列 */
+@media (max-width: 900px){
+  .gallery-grid{ grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 480px){
+  .gallery-grid{ grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="bg-fixed"></div>
+
+<div class="top-nav">
+  <a href=" ">图片</a >
+  <a href="">视频</a >
+  <a href="">下载</a >
+  <a href="#">关于</a >
+  <a href="#">支持</a >
+  <a href="#">获取启动器</a >
+</div>
+
+<div class="wrap-box">
+  <div class="gallery-grid" id="galleryContainer"></div>
+  <div class="pagination">
+    <button class="page-btn" id="prevPage">上一页</button>
+    <span id="pageInfo">第1页</span>
+    <button class="page-btn" id="nextPage">下一页</button>
+  </div>
+</div>
+
+<script>
+// 所有图片列表，按需增删
+const imgList = [
+  "photo/11.webp","photo/22.webp","photo/33.webp","photo/44.webp",
+  "photo/55.webp","photo/66.webp","photo/77.webp","photo/88.webp",
+  "photo/11.webp","photo/22.webp","photo/33.webp","photo/44.webp",
+  "photo/55.webp","photo/66.webp","photo/77.webp","photo/88.webp"
+];
+const perPage = 12; // 每页12张
+let currentPage = 1;
+const totalPage = Math.ceil(imgList.length / perPage);
+
+const container = document.getElementById('galleryContainer');
+const prevBtn = document.getElementById('prevPage');
+const nextBtn = document.getElementById('nextPage');
+const pageInfo = document.getElementById('pageInfo');
+
+// 渲染当前页图片
+function renderGallery(){
+  container.innerHTML = '';
+  const start = (currentPage - 1) * perPage;
+  const end = start + perPage;
+  const pageImgs = imgList.slice(start, end);
+
+  pageImgs.forEach(src=>{
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+    const img = document.createElement('img');
+    img.src = src;
+    img.loading = 'lazy';
+    img.alt = '服务器图片';
+    div.appendChild(img);
+    container.appendChild(div);
+  });
+
+  // 更新分页状态
+  pageInfo.textContent = `第${currentPage}页 / 共${totalPage}页`;
+  prevBtn.disabled = currentPage <= 1;
+  nextBtn.disabled = currentPage >= totalPage;
+}
+
+prevBtn.onclick = ()=>{
+  if(currentPage>1){ currentPage--; renderGallery(); }
+}
+nextBtn.onclick = ()=>{
+  if(currentPage<totalPage){ currentPage++; renderGallery(); }
+}
+
+// 初始化
+renderGallery();
+</script>
+</body>
+</html>
