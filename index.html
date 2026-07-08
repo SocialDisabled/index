@@ -105,7 +105,7 @@ body {
   transition: 0.6s ease;
 }
 .slider-item {
-  width: 12.5%; /* 8张图均分 100/8=12.5% */
+  width: 12.5%;
   height: 100%;
 }
 .slider-item img {
@@ -216,7 +216,6 @@ body {
   color: #222;
   margin-bottom: 20px;
 }
-/* 视频容器样式 */
 .main-content video {
   width: 100%;
   border-radius: 12px;
@@ -231,11 +230,11 @@ body {
   }
 }
 
-/* 瑞克摇弹窗样式 */
+/* 瑞克摇弹窗样式 适配手机全屏 */
 .egg-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.92);
+  background: rgba(0, 0, 0, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -249,11 +248,12 @@ body {
   pointer-events: auto;
 }
 .egg-modal video {
-  width: 92%;
+  width: 96%;
   max-width: 950px;
   border-radius: 8px;
   box-shadow: 0 0 40px #000;
 }
+/* 关闭按钮放右上角，手机大屏都显眼 */
 .egg-close {
   position: absolute;
   top: 24px;
@@ -268,6 +268,7 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  z-index: 10;
 }
 .egg-close:hover {
   background: rgba(255,255,255,0.3);
@@ -279,7 +280,7 @@ body {
 <div class="bg-fixed"></div>
 
 <div class="top-nav">
-  <a href="gallery.html">图片</a >
+  <a href=" ">图片</a >
   <a href="#">视频</a >
   <a href="#">下载</a >
   <a href="#">支持</a >
@@ -293,14 +294,14 @@ body {
   <div class="slider-box">
     <div class="slider-wrap">
      
-      <div class="slider-item"><img loading="lazy" src="photo/11.webp" alt="图1"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/22.webp" alt="图2"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/33.webp" alt="图3"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/44.webp" alt="图4"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/55.webp" alt="图5"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/66.webp" alt="图6"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/77.webp" alt="图7"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/88.webp" alt="图8"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/11.webp" alt="图1"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/22.webp" alt="图2"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/33.webp" alt="图3"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/44.webp" alt="图4"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/55.webp" alt="图5"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/66.webp" alt="图6"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/77.webp" alt="图7"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/88.webp" alt="图8"></div>
     </div>
     <div class="slider-mask"></div>
     <div class="slider-text">
@@ -323,11 +324,10 @@ body {
   </div>
 </div>
 
-<!-- 瑞克摇弹窗 -->
+<!-- 瑞克摇弹窗：移除autoplay，靠JS用户交互播放 -->
 <div class="egg-modal" id="eggModal">
   <div class="egg-close" id="eggClose">&times;</div>
-  <!-- 无muted，打开直接出声，用来吓人 -->
-  <video id="eggVideo" src="video/rickroll.mp4" autoplay controls></video>
+  <video id="eggVideo" src="video/rickroll.mp4" controls></video>
 </div>
 
 <script>
@@ -352,7 +352,6 @@ for(let i=0; i<total; i++){
 }
 const dots = document.querySelectorAll('.dot');
 
-// 修复轮播位移逻辑：每张占12.5%，位移 index * 12.5%
 function changeSlide(){
   wrap.style.transform = `translateX(-${index * 12.5}%)`;
   dots.forEach(d=>d.classList.remove('active'));
@@ -374,17 +373,15 @@ function prev(){
 nextBtn.onclick = next;
 prevBtn.onclick = prev;
 
-// 自动轮播
 function autoPlay(){
   timer = setInterval(next, 3000);
 }
 autoPlay();
 
-// 鼠标悬停暂停
 document.querySelector('.slider-box').onmouseenter = ()=> clearInterval(timer);
 document.querySelector('.slider-box').onmouseleave = autoPlay;
 
-// 瑞克摇彩蛋逻辑
+// 瑞克摇彩蛋逻辑（修复手机无法自动播放）
 const btn = document.querySelector('.btn-link');
 const eggModal = document.getElementById('eggModal');
 const eggVideo = document.getElementById('eggVideo');
@@ -395,7 +392,8 @@ let clickTimer = null;
 
 function openEggVideo() {
   eggModal.classList.add('show');
-  eggVideo.play();
+  // 点击按钮属于用户主动交互，浏览器允许播放带声音视频
+  eggVideo.play().catch(err=>console.log("播放失败:",err));
   clickCount = 0;
 }
 
