@@ -230,6 +230,48 @@ body {
     font-size: 24px;
   }
 }
+
+/* 瑞克摇弹窗样式 */
+.egg-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s ease;
+}
+.egg-modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.egg-modal video {
+  width: 92%;
+  max-width: 950px;
+  border-radius: 8px;
+  box-shadow: 0 0 40px #000;
+}
+.egg-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.egg-close:hover {
+  background: rgba(255,255,255,0.3);
+}
 </style>
 </head>
 <body>
@@ -237,7 +279,7 @@ body {
 <div class="bg-fixed"></div>
 
 <div class="top-nav">
-  <a href=" ">图片</a >
+  <a href="gallery.html">图片</a >
   <a href="#">视频</a >
   <a href="#">下载</a >
   <a href="#">支持</a >
@@ -251,14 +293,14 @@ body {
   <div class="slider-box">
     <div class="slider-wrap">
      
-      <div class="slider-item">< img loading="lazy" src="photo/11.webp" alt="图1"></div>
-      <div class="slider-item">< img loading="lazy" src="photo/22.webp" alt="图2"></div>
-      <div class="slider-item">< img loading="lazy" src="photo/33.webp" alt="图3"></div>
-      <div class="slider-item">< img loading="lazy" src="photo/44.webp" alt="图4"></div>
-      <div class="slider-item">< img loading="lazy" src="photo/55.webp" alt="图5"></div>
-      <div class="slider-item">< img loading="lazy" src="photo/66.webp" alt="图6"></div>
-      <div class="slider-item">< img loading="lazy" src="photo/77.webp" alt="图7"></div>
-      <div class="slider-item">< img loading="lazy" src="photo/88.webp" alt="图8"></div>
+      <div class="slider-item"><img loading="lazy" src="photo/11.webp" alt="图1"></div>
+      <div class="slider-item"><img loading="lazy" src="photo/22.webp" alt="图2"></div>
+      <div class="slider-item"><img loading="lazy" src="photo/33.webp" alt="图3"></div>
+      <div class="slider-item"><img loading="lazy" src="photo/44.webp" alt="图4"></div>
+      <div class="slider-item"><img loading="lazy" src="photo/55.webp" alt="图5"></div>
+      <div class="slider-item"><img loading="lazy" src="photo/66.webp" alt="图6"></div>
+      <div class="slider-item"><img loading="lazy" src="photo/77.webp" alt="图7"></div>
+      <div class="slider-item"><img loading="lazy" src="photo/88.webp" alt="图8"></div>
     </div>
     <div class="slider-mask"></div>
     <div class="slider-text">
@@ -277,9 +319,15 @@ body {
     <h6>这是一个服务器</h6>
     <h1>这是一个官网</h1>
     <h1>天不生我唐人海，万古如长夜</h1>
-    <!-- video标签正确写法，src直接放video上，不要嵌套img -->
     <video src="video/a2640efc46ad47053a2fba384c44db8c.mp4" controls></video>
   </div>
+</div>
+
+<!-- 瑞克摇弹窗 -->
+<div class="egg-modal" id="eggModal">
+  <div class="egg-close" id="eggClose">&times;</div>
+  <!-- 无muted，打开直接出声，用来吓人 -->
+  <video id="eggVideo" src="video/rickroll.mp4" autoplay controls></video>
 </div>
 
 <script>
@@ -336,26 +384,51 @@ autoPlay();
 document.querySelector('.slider-box').onmouseenter = ()=> clearInterval(timer);
 document.querySelector('.slider-box').onmouseleave = autoPlay;
 
-// 点击3次跳转瑞克摇彩蛋
+// 瑞克摇彩蛋逻辑
 const btn = document.querySelector('.btn-link');
+const eggModal = document.getElementById('eggModal');
+const eggVideo = document.getElementById('eggVideo');
+const eggClose = document.getElementById('eggClose');
+
 let clickCount = 0;
 let clickTimer = null;
-const rickUrl = 'https://www.bilibili.com/video/BV1GJ411x7h7/?spm_id_from=333.337.search-card.all.click&vd_source=fae5bc83340c2c9eb6ce230b387ed8ff';
+
+function openEggVideo() {
+  eggModal.classList.add('show');
+  eggVideo.play();
+  clickCount = 0;
+}
+
+function closeEggVideo() {
+  eggModal.classList.remove('show');
+  eggVideo.pause();
+  eggVideo.currentTime = 0;
+}
 
 btn.addEventListener('click', function(e) {
   clickCount++;
   clearTimeout(clickTimer);
+
   clickTimer = setTimeout(() => {
     clickCount = 0;
   }, 3000);
 
-  if(clickCount >= 3) {
-    window.open(rickUrl, '_blank');
-    clickCount = 0;
+  if (clickCount >= 3) {
+    e.preventDefault();
+    openEggVideo();
   } else {
     e.preventDefault();
-    document.querySelector('#main').scrollIntoView({behavior: 'smooth'});
+    document.querySelector('#main').scrollIntoView({ behavior: 'smooth' });
   }
+});
+
+// 关闭事件
+eggClose.addEventListener('click', closeEggVideo);
+eggModal.addEventListener('click', e => {
+  if (e.target === eggModal) closeEggVideo();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && eggModal.classList.contains('show')) closeEggVideo();
 });
 </script>
 </body>
