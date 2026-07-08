@@ -5,7 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>MC基岩JAVA互通服务器</title>
 
+<!-- 预加载轮播全部背景图 -->
 <link rel="preload" href="photo/44.webp" as="image">
+<link rel="preload" href="photo/11.webp" as="image">
+<link rel="preload" href="photo/22.webp" as="image">
+<link rel="preload" href="photo/33.webp" as="image">
+<link rel="preload" href="photo/55.webp" as="image">
+<link rel="preload" href="photo/66.webp" as="image">
+<link rel="preload" href="photo/77.webp" as="image">
+<link rel="preload" href="photo/88.webp" as="image">
+
 <style>
 *{
   margin: 0;
@@ -13,7 +22,6 @@
   box-sizing: border-box;
   font-family: system-ui, sans-serif;
 }
-
 
 .bg-fixed {
   position: fixed;
@@ -51,6 +59,15 @@ body {
 .top-nav a:hover{
   opacity: 1;
 }
+/* 移动端导航适配 */
+@media (max-width: 720px) {
+  .top-nav {
+    gap: 12px;
+  }
+  .top-nav a {
+    font-size: 12px;
+  }
+}
 
 .wrap-box{
   max-width: 1200px;
@@ -65,6 +82,21 @@ body {
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.12);
  }
+/* 移动端轮播高度缩小 */
+@media (max-width: 720px) {
+  .slider-box {
+    height: 260px;
+  }
+  .slider-text h2 {
+    font-size: 24px !important;
+  }
+  .slider-text p {
+    font-size: 13px !important;
+  }
+  .slider-text {
+    padding: 12px 16px;
+  }
+}
 
 .slider-wrap {
   width: 800%;
@@ -73,7 +105,7 @@ body {
   transition: 0.6s ease;
 }
 .slider-item {
-  width: 100%;
+  width: 12.5%; /* 8张图均分 100/8=12.5% */
   height: 100%;
 }
 .slider-item img {
@@ -184,6 +216,20 @@ body {
   color: #222;
   margin-bottom: 20px;
 }
+/* 视频容器样式 */
+.main-content video {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+@media (max-width:720px){
+  .main-content {
+    padding: 20px 15px;
+  }
+  .main-content h1 {
+    font-size: 24px;
+  }
+}
 </style>
 </head>
 <body>
@@ -191,12 +237,12 @@ body {
 <div class="bg-fixed"></div>
 
 <div class="top-nav">
-  <a href="gallery.html">图片</a>
-  <a href="#">视频</a>
-  <a href="#">下载</a>
-  <a href="#">支持</a>
-  <a href="index.html">主页</a>
-  <a href="#">获取启动器</a>
+  <a href=" ">图片</a >
+  <a href="#">视频</a >
+  <a href="#">下载</a >
+  <a href="#">支持</a >
+  <a href="index.html">主页</a >
+  <a href="#">获取启动器</a >
 </div>
 
 
@@ -205,21 +251,21 @@ body {
   <div class="slider-box">
     <div class="slider-wrap">
      
-      <div class="slider-item"><img loading="lazy" src="photo/11.webp" alt="图1"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/22.webp" alt="图2"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/33.webp" alt="图3"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/44.webp" alt="图4"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/55.webp" alt="图5"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/66.webp" alt="图6"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/77.webp" alt="图7"></div>
-      <div class="slider-item"><img loading="lazy" src="photo/88.webp" alt="图8"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/11.webp" alt="图1"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/22.webp" alt="图2"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/33.webp" alt="图3"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/44.webp" alt="图4"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/55.webp" alt="图5"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/66.webp" alt="图6"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/77.webp" alt="图7"></div>
+      <div class="slider-item">< img loading="lazy" src="photo/88.webp" alt="图8"></div>
     </div>
     <div class="slider-mask"></div>
     <div class="slider-text">
-      <p>MC基岩Java互通服务器</p>
+      <p>MC基岩Java互通服务器</p >
       <h2>立即加入游玩</h2>
      
-      <a class="btn-link" href="#main">了解更多</a>
+      <a class="btn-link" href="#main">了解更多</a >
     </div>
     <button class="slider-btn prev">&lt;</button>
     <button class="slider-btn next">&gt;</button>
@@ -231,9 +277,8 @@ body {
     <h6>这是一个服务器</h6>
     <h1>这是一个官网</h1>
     <h1>天不生我唐人海，万古如长夜</h1>
-    <video>
-      <img src="video/a2640efc46ad47053a2fba384c44db8c.mp4">
-    </video>
+    <!-- video标签正确写法，src直接放video上，不要嵌套img -->
+    <video src="video/a2640efc46ad47053a2fba384c44db8c.mp4" controls></video>
   </div>
 </div>
 
@@ -246,6 +291,7 @@ const prevBtn = document.querySelector('.prev');
 const nextBtn = document.querySelector('.next');
 let timer;
 
+// 生成轮播圆点
 for(let i=0; i<total; i++){
   const dot = document.createElement('span');
   dot.className = 'dot';
@@ -258,8 +304,9 @@ for(let i=0; i<total; i++){
 }
 const dots = document.querySelectorAll('.dot');
 
+// 修复轮播位移逻辑：每张占12.5%，位移 index * 12.5%
 function changeSlide(){
-  wrap.style.transform = `translateX(-${index * 100 / total}%)`;
+  wrap.style.transform = `translateX(-${index * 12.5}%)`;
   dots.forEach(d=>d.classList.remove('active'));
   dots[index].classList.add('active');
 }
@@ -279,15 +326,17 @@ function prev(){
 nextBtn.onclick = next;
 prevBtn.onclick = prev;
 
+// 自动轮播
 function autoPlay(){
   timer = setInterval(next, 3000);
 }
 autoPlay();
 
+// 鼠标悬停暂停
 document.querySelector('.slider-box').onmouseenter = ()=> clearInterval(timer);
 document.querySelector('.slider-box').onmouseleave = autoPlay;
 
-
+// 点击3次跳转瑞克摇彩蛋
 const btn = document.querySelector('.btn-link');
 let clickCount = 0;
 let clickTimer = null;
