@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>服务器图片</title>
+<title>MC基岩JAVA互通服务器 - 图片</title>
+<link rel="preload" href="photo/44.webp" as="image">
 <style>
 *{
   margin: 0;
@@ -48,19 +49,26 @@ body {
 .top-nav a:hover{
   opacity: 1;
 }
-
-.wrap-box{
-  max-width: 100%;
-  margin: 20px auto;
-  padding: 0 5vw
+/* 导航移动端适配 和首页统一 */
+@media (max-width: 720px) {
+  .top-nav {
+    gap: 12px;
+  }
+  .top-nav a {
+    font-size: 12px;
+  }
 }
 
+.wrap-box{
+  max-width: 1200px;
+  margin: 20px auto;
+}
 
 .gallery-grid{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
-  padding: 24px;
+  padding: 30px;
   background: rgba(255,255,255,0.88);
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.12);
@@ -83,38 +91,52 @@ body {
   display: block;
 }
 
-
 .pagination{
   display: flex;
   justify-content: center;
-  gap: 12px;
+  align-items: center;
+  gap: 16px;
   margin-top: 24px;
 }
 .page-btn{
-  padding: 8px 16px;
+  padding: 10px 24px;
   border: none;
-  border-radius: 8px;
-  background: rgba(0,0,0,0.6);
-  color: #fff;
+  border-radius: 30px;
+  background: #ffd288;
+  color: #000;
+  font-size: 14px;
   cursor: pointer;
+  transition: background 0.2s;
+}
+.page-btn:hover{
+  background: #ffdfaa;
 }
 .page-btn:disabled{
   background: rgba(0,0,0,0.2);
+  color: #fff;
   cursor: not-allowed;
 }
+#pageInfo{
+  color: #fff;
+  font-size: 14px;
+}
 
-
+/* 栅格响应式 与首页尺寸匹配 */
 @media (max-width: 900px){
   .gallery-grid{ grid-template-columns: repeat(2,1fr); }
 }
 @media (max-width: 480px){
   .gallery-grid{ grid-template-columns: 1fr; }
+  .gallery-grid {
+    padding: 20px 15px;
+  }
 }
 
+/* 大图预览灯箱 深色遮罩和首页弹窗统一 */
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0.92);
   z-index: 9999;
   display: none;
   align-items: center;
@@ -129,18 +151,27 @@ body {
   max-height: calc(100vh - 4rem);
   border-radius: 8px;
   object-fit: contain;
+  box-shadow: 0 0 40px #000;
 }
 .lightbox-close {
   position: absolute;
-  top: 20px;
-  right: 30px;
+  top: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
   color: #fff;
-  font-size: 36px;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   user-select: none;
+  z-index: 10;
 }
 .lightbox-close:hover {
-  color: #ffd288;
+  background: rgba(255,255,255,0.3);
 }
 </style>
 </head>
@@ -164,7 +195,6 @@ body {
     <button class="page-btn" id="nextPage">下一页</button>
   </div>
 </div>
-
 
 <div class="lightbox" id="lightbox">
   <span class="lightbox-close" id="lightboxClose">&times;</span>
@@ -217,13 +247,11 @@ function renderGallery(){
   nextBtn.disabled = currentPage >= totalPage;
 }
 
-
 function closeLightbox(){
   lightbox.classList.remove('active');
   lightboxImg.src = '';
   document.body.style.overflow = '';
 }
-
 
 lightboxClose.addEventListener('click', closeLightbox);
 lightbox.addEventListener('click', (e)=>{
