@@ -273,11 +273,31 @@ body {
 .egg-close:hover {
   background: rgba(255,255,255,0.3);
 }
+
+/* ========== 新增左下角隐藏彩蛋链接样式 ========== */
+.secret-egg {
+  position: fixed;
+  left: 8px;
+  bottom: 8px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.08);
+  text-decoration: none;
+  z-index: 99;
+  transition: all 0.3s ease;
+  padding: 4px;
+}
+.secret-egg:hover {
+  color: rgba(255,255,255,0.7);
+  font-size: 12px;
+}
 </style>
 </head>
 <body>
 
 <div class="bg-fixed"></div>
+
+<!-- 左下角隐藏彩蛋 -->
+<a href="text.html" class="secret-egg">·</a>
 
 <div class="top-nav">
   <a href="gallery.html">图片</a >
