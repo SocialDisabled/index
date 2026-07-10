@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MC基岩JAVA互通服务器 - 文本说明</title>
+<link rel="preload" href="photo/44.webp" as="image">
+<style>
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+/* 【完全保留你原版全屏背景，无修改】 */
+.bg-fixed {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("photo/44.webp") center top / cover no-repeat;
+}
+body {
+  min-height: 100vh;
+  padding: 0 20px;
+  padding-top: 70px;
+}
+
+/* 顶部导航 完全复用官网原版样式 */
+.top-nav{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  z-index: 999;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.top-nav a{
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  opacity: 0.9;
+}
+.top-nav a:hover{
+  opacity: 1;
+}
+/* 导航移动端适配 */
+@media (max-width: 720px) {
+  .top-nav {
+    gap: 12px;
+  }
+  .top-nav a {
+    font-size: 12px;
+  }
+}
+
+/* 外层容器拉满屏幕宽度，和图片页统一 */
+.wrap-box{
+  max-width: 98vw;
+  margin: 20px auto;
+}
+
+/* 纯文本半透明容器，适配大量文字 */
+.text-box{
+  width: 100%;
+  padding: 40px 32px;
+  background: rgba(255,255,255,0.88);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  line-height: 1.8;
+  font-size: 16px;
+  color: #222;
+  white-space: pre-wrap; /* 保留文本换行排版 */
+}
+/* 手机适配 */
+@media (max-width: 720px) {
+  .text-box {
+    padding: 24px 16px;
+    font-size: 15px;
+  }
+}
+
+/* 分页按钮样式，和gallery图片页完全统一 */
+.pagination{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+.page-btn{
+  padding: 10px 24px;
+  border: none;
+  border-radius: 30px;
+  background: #ffd288;
+  color: #000;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.page-btn:hover{
+  background: #ffdfaa;
+}
+.page-btn:disabled{
+  background: rgba(0,0,0,0.2);
+  color: #fff;
+  cursor: not-allowed;
+}
+#pageInfo{
+  color: #fff;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+<!-- 固定全屏背景 原样保留 -->
+<div class="bg-fixed"></div>
+
+<!-- 顶部导航和官网互通 -->
+<div class="top-nav">
+  <a href="gallery.html">图片</a>
+  <a href="">视频</a>
+  <a href="">下载</a>
+  <a href="#">支持</a>
+  <a href="index.html">主页</a>
+  <a href="#">获取启动器</a>
+</div>
+
+<div class="wrap-box">
+  <!-- 文本展示框 -->
+  <div class="text-box" id="textContainer">
+这是一个文本
+  </div>
+
+  <!-- 分页上下页 -->
+  <div class="pagination">
+    <button class="page-btn" id="prevPage">上一页</button>
+    <span id="pageInfo">第1页 / 共1页</span>
+    <button class="page-btn" id="nextPage">下一页</button>
+  </div>
+</div>
+
+<script>
+// 在这里修改每一页的文本，数组一条代表一页
+const textPages = [
+`这是一个文本
+
+第一页内容区域
+可以写大量文字，回车自动分段
+段落空一行会保留空白间距
+
+示例：
+1. 服务器介绍
+2. 游玩规则
+3. 常见问题解答
+`,
+`第二页文本内容
+在这里写第二页需要展示的文字内容
+`,
+`第三页文本内容
+新增数组逗号内容就能新增分页
+`
+];
+
+let currentPage = 1;
+const totalPage = textPages.length;
+
+const textContainer = document.getElementById('textContainer');
+const prevBtn = document.getElementById('prevPage');
+const nextBtn = document.getElementById('nextPage');
+const pageInfo = document.getElementById('pageInfo');
+
+// 渲染当前页面文字
+function renderText(){
+  textContainer.innerText = textPages[currentPage - 1];
+  pageInfo.textContent = `第${currentPage}页 / 共${totalPage}页`;
+  prevBtn.disabled = currentPage <= 1;
+  nextBtn.disabled = currentPage >= totalPage;
+}
+
+// 上一页
+prevBtn.onclick = ()=>{
+  if(currentPage > 1){
+    currentPage--;
+    renderText();
+  }
+}
+// 下一页
+nextBtn.onclick = ()=>{
+  if(currentPage < totalPage){
+    currentPage++;
+    renderText();
+  }
+}
+
+// 页面初始化加载第一页
+renderText();
+</script>
+</body>
+</html>
