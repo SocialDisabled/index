@@ -13,7 +13,7 @@
   font-family: system-ui, sans-serif;
 }
 
-/* 【完全保留你原版全屏背景，无修改】 */
+
 .bg-fixed {
   position: fixed;
   inset: 0;
@@ -26,7 +26,7 @@ body {
   padding-top: 70px;
 }
 
-/* 顶部导航 完全复用官网原版样式 */
+
 .top-nav{
   position: fixed;
   top: 0;
@@ -51,7 +51,7 @@ body {
 .top-nav a:hover{
   opacity: 1;
 }
-/* 导航移动端适配 */
+
 @media (max-width: 720px) {
   .top-nav {
     gap: 12px;
@@ -61,13 +61,13 @@ body {
   }
 }
 
-/* 外层容器拉满屏幕宽度，和图片页统一 */
+
 .wrap-box{
   max-width: 98vw;
   margin: 20px auto;
 }
 
-/* 纯文本半透明容器，适配大量文字 */
+
 .text-box{
   width: 100%;
   padding: 40px 32px;
@@ -77,7 +77,7 @@ body {
   line-height: 1.8;
   font-size: 16px;
   color: #222;
-  white-space: pre-wrap; /* 保留文本换行排版 */
+  white-space: pre-wrap; 
 }
 /* 手机适配 */
 @media (max-width: 720px) {
@@ -87,7 +87,7 @@ body {
   }
 }
 
-/* 分页按钮样式，和gallery图片页完全统一 */
+
 .pagination{
   display: flex;
   justify-content: center;
@@ -120,10 +120,10 @@ body {
 </style>
 </head>
 <body>
-<!-- 固定全屏背景 原样保留 -->
+
 <div class="bg-fixed"></div>
 
-<!-- 顶部导航和官网互通 -->
+
 <div class="top-nav">
   <a href="gallery.html">图片</a>
   <a href="">视频</a>
@@ -134,12 +134,12 @@ body {
 </div>
 
 <div class="wrap-box">
-  <!-- 文本展示框 -->
+
   <div class="text-box" id="textContainer">
 这是一个文本
   </div>
 
-  <!-- 分页上下页 -->
+
   <div class="pagination">
     <button class="page-btn" id="prevPage">上一页</button>
     <span id="pageInfo">第1页 / 共1页</span>
@@ -148,7 +148,7 @@ body {
 </div>
 
 <script>
-// 在这里修改每一页的文本，数组一条代表一页
+
 const textPages = [
 `啥也没有
 `,
@@ -285,7 +285,7 @@ const prevBtn = document.getElementById('prevPage');
 const nextBtn = document.getElementById('nextPage');
 const pageInfo = document.getElementById('pageInfo');
 
-// 渲染当前页面文字
+
 function renderText(){
   textContainer.innerText = textPages[currentPage - 1];
   pageInfo.textContent = `第${currentPage}页 / 共${totalPage}页`;
@@ -293,14 +293,14 @@ function renderText(){
   nextBtn.disabled = currentPage >= totalPage;
 }
 
-// 上一页
+
 prevBtn.onclick = ()=>{
   if(currentPage > 1){
     currentPage--;
     renderText();
   }
 }
-// 下一页
+
 nextBtn.onclick = ()=>{
   if(currentPage < totalPage){
     currentPage++;
@@ -308,7 +308,7 @@ nextBtn.onclick = ()=>{
   }
 }
 
-// 页面初始化加载第一页
+
 renderText();
 </script>
 </body>
