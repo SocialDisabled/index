@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>MC基岩JAVA互通服务器</title>
 
-<!-- 预加载轮播全部背景图 -->
+
 <link rel="preload" href="photo/44.webp" as="image">
 <link rel="preload" href="photo/11.webp" as="image">
 <link rel="preload" href="photo/22.webp" as="image">
@@ -59,7 +59,7 @@ body {
 .top-nav a:hover{
   opacity: 1;
 }
-/* 移动端导航适配 */
+
 @media (max-width: 720px) {
   .top-nav {
     gap: 12px;
@@ -82,7 +82,7 @@ body {
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.12);
  }
-/* 移动端轮播高度缩小 */
+
 @media (max-width: 720px) {
   .slider-box {
     height: 260px;
@@ -230,7 +230,7 @@ body {
   }
 }
 
-/* 瑞克摇弹窗样式 适配手机全屏 */
+
 .egg-modal {
   position: fixed;
   inset: 0;
@@ -253,7 +253,7 @@ body {
   border-radius: 8px;
   box-shadow: 0 0 40px #000;
 }
-/* 关闭按钮放右上角，手机大屏都显眼 */
+
 .egg-close {
   position: absolute;
   top: 24px;
@@ -274,7 +274,7 @@ body {
   background: rgba(255,255,255,0.3);
 }
 
-/* ========== 新增左下角隐藏彩蛋链接样式 ========== */
+
 .secret-egg {
   position: fixed;
   left: 8px;
@@ -296,7 +296,7 @@ body {
 
 <div class="bg-fixed"></div>
 
-<!-- 左下角隐藏彩蛋 -->
+
 <a href="text.html" class="secret-egg">·</a>
 
 <div class="top-nav">
@@ -343,7 +343,7 @@ body {
   </div>
 </div>
 
-<!-- 瑞克摇弹窗：移除autoplay，靠JS用户交互播放 -->
+
 <div class="egg-modal" id="eggModal">
   <div class="egg-close" id="eggClose">&times;</div>
   <video id="eggVideo" src="video/rickroll.mp4" controls></video>
@@ -400,7 +400,7 @@ autoPlay();
 document.querySelector('.slider-box').onmouseenter = ()=> clearInterval(timer);
 document.querySelector('.slider-box').onmouseleave = autoPlay;
 
-// 瑞克摇彩蛋逻辑（修复手机无法自动播放）
+
 const btn = document.querySelector('.btn-link');
 const eggModal = document.getElementById('eggModal');
 const eggVideo = document.getElementById('eggVideo');
@@ -411,7 +411,7 @@ let clickTimer = null;
 
 function openEggVideo() {
   eggModal.classList.add('show');
-  // 点击按钮属于用户主动交互，浏览器允许播放带声音视频
+  
   eggVideo.play().catch(err=>console.log("播放失败:",err));
   clickCount = 0;
 }
@@ -439,7 +439,7 @@ btn.addEventListener('click', function(e) {
   }
 });
 
-// 关闭事件
+
 eggClose.addEventListener('click', closeEggVideo);
 eggModal.addEventListener('click', e => {
   if (e.target === eggModal) closeEggVideo();
