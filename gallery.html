@@ -45,9 +45,90 @@ body {
   text-decoration: none;
   font-size: 14px;
   opacity: 0.9;
+  cursor: pointer;
 }
 .top-nav a:hover{
   opacity: 1;
+}
+
+/* 全屏下拉菜单 */
+.full-dropdown {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 60px);
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 998;
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  color: #fff;
+  pointer-events: none;
+  visibility: hidden;
+}
+.full-dropdown.open {
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.full-dropdown-left {
+  background: rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+}
+.full-dropdown-item {
+  padding: 0 30px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  transition: 0.2s;
+  font-size: 16px;
+  background: transparent;
+}
+.full-dropdown-item.active {
+  background: rgba(0,0,0,0.35);
+  border-left-color: #ffd288;
+}
+.full-dropdown-item:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.full-dropdown-right {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.full-dropdown-title {
+  font-size: 26px;
+  margin-bottom: 16px;
+}
+.full-dropdown-desc {
+  font-size: 16px;
+  opacity: 0.85;
+  margin-bottom: 24px;
+  line-height: 1.7;
+  max-width: 600px;
+}
+.full-dropdown-link {
+  display: inline-block;
+  padding: 12px 30px;
+  border-radius: 30px;
+  background: #ffd288;
+  color: #000;
+  text-decoration: none;
+  font-size: 16px;
+  width: fit-content;
+}
+.full-dropdown-link:hover {
+  background: #ffdfaa;
 }
 
 @media (max-width: 720px) {
@@ -56,6 +137,19 @@ body {
   }
   .top-nav a {
     font-size: 12px;
+  }
+  .full-dropdown {
+    grid-template-columns: 1fr 2fr;
+  }
+  .full-dropdown-title {
+    font-size: 20px;
+  }
+  .full-dropdown-desc {
+    font-size: 14px;
+  }
+  .full-dropdown-item {
+    padding: 0 15px;
+    font-size: 14px;
   }
 }
 
@@ -179,12 +273,27 @@ body {
 <div class="bg-fixed"></div>
 
 <div class="top-nav">
-  <a href="gallery.html">图片</a >
-  <a href="">视频</a >
-  <a href="">下载</a >
-  <a href="#">支持</a >
-  <a href="index.html">主页</a >
-  <a href="#">获取启动器</a >
+  <a href="gallery.html">图片</a>
+  <a href="">视频</a>
+  <a href="">下载</a>
+  <a href="#">支持</a>
+  <a href="index.html">主页</a>
+  <a id="moreToggle">更多</a>
+</div>
+
+<div class="full-dropdown" id="fullDropdown">
+  <div class="full-dropdown-left">
+    <div class="full-dropdown-item active" data-id="mod">MC联机</div>
+    <div class="full-dropdown-item" data-id="launcher">泰拉瑞亚联机</div>
+    <div class="full-dropdown-item" data-id="guide">星露谷联机</div>
+    <div class="full-dropdown-item" data-id="faq">饥荒联机</div>
+    <div class="full-dropdown-item" data-id="community">待开发</div>
+  </div>
+  <div class="full-dropdown-right" id="dropdownRight">
+    <h3 class="full-dropdown-title">MC联机</h3>
+    <p class="full-dropdown-desc">简简单单的服务器，没啥亮眼。</p>
+    <a class="full-dropdown-link" href="https://kurlet.com" target="_blank">前往查看</a>
+  </div>
 </div>
 
 <div class="wrap-box">
@@ -271,6 +380,74 @@ nextBtn.onclick = ()=>{
 }
 
 renderGallery();
+
+// ===== 全屏下拉菜单逻辑 =====
+const moreToggle = document.getElementById('moreToggle');
+const fullDropdown = document.getElementById('fullDropdown');
+const leftItems = document.querySelectorAll('.full-dropdown-item');
+const dropdownRight = document.getElementById('dropdownRight');
+
+const menuData = {
+  mod: {
+    title: "MC联机",
+    desc: "简简单单的服务器，没啥亮眼。",
+    link: "https://kurlet.com"
+  },
+  launcher: {
+    title: "泰拉瑞亚联机",
+    desc: "还没开始做，目前只有MC联机。",
+    link: "https://kurlet.com"
+  },
+  guide: {
+    title: "星露谷联机",
+    desc: "其实你完全可以走steam联机的对吧。",
+    link: "https://kurlet.com"
+  },
+  faq: {
+    title: "饥荒联机",
+    desc: "还没搞，其实steam联机也不是不行。",
+    link: "https://kurlet.com"
+  },
+  community: {
+    title: "待开发",
+    desc: "没准有个大的。",
+    link: "https://kurlet.com"
+  }
+};
+
+function updatePanel(id) {
+  const data = menuData[id];
+  dropdownRight.innerHTML = `
+    <h3 class="full-dropdown-title">${data.title}</h3>
+    <p class="full-dropdown-desc">${data.desc}</p>
+    <a class="full-dropdown-link" href="${data.link}" target="_blank">前往查看</a>
+  `;
+  leftItems.forEach(item => item.classList.remove('active'));
+  document.querySelector(`.full-dropdown-item[data-id="${id}"]`).classList.add('active');
+}
+
+function toggleDropdown() {
+  fullDropdown.classList.toggle('open');
+}
+moreToggle.addEventListener('click', toggleDropdown);
+
+leftItems.forEach(item => {
+  item.addEventListener('click', () => {
+    updatePanel(item.dataset.id);
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape') {
+    fullDropdown.classList.remove('open');
+  }
+});
+
+document.addEventListener('click', (e) => {
+  if (!fullDropdown.contains(e.target) && e.target !== moreToggle) {
+    fullDropdown.classList.remove('open');
+  }
+});
 </script>
 
 </body>
