@@ -60,7 +60,7 @@ body {
   opacity: 1;
 }
 
-/* 全屏下拉菜单容器 */
+
 .full-dropdown {
   position: fixed;
   top: 60px;
@@ -71,7 +71,7 @@ body {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   z-index: 998;
-  /* 平滑下拉动画 */
+
   transform: translateY(-100%);
   transition: transform 0.4s ease;
   display: grid;
@@ -82,7 +82,7 @@ body {
   transform: translateY(0);
 }
 
-/* 左侧菜单区域 - 修改底色为浅底色，只让active选中项加深 */
+
 .full-dropdown-left {
   background: rgba(0,0,0,0.15);
   display: flex;
@@ -99,7 +99,7 @@ body {
   font-size: 16px;
   background: transparent;
 }
-/* 选中项加深背景 */
+
 .full-dropdown-item.active {
   background: rgba(0,0,0,0.35);
   border-left-color: #ffd288;
@@ -108,7 +108,7 @@ body {
   background: rgba(255,255,255,0.08);
 }
 
-/* 右侧详情区域 */
+
 .full-dropdown-right {
   padding: 40px;
   display: flex;
@@ -398,18 +398,18 @@ body {
   <a id="moreToggle">更多</a>
 </div>
 
-<!-- 全屏下拉面板 -->
+
 <div class="full-dropdown" id="fullDropdown">
   <div class="full-dropdown-left">
-    <div class="full-dropdown-item active" data-id="mod">模组资源</div>
-    <div class="full-dropdown-item" data-id="launcher">启动器下载</div>
-    <div class="full-dropdown-item" data-id="guide">使用教程</div>
-    <div class="full-dropdown-item" data-id="faq">常见问题</div>
-    <div class="full-dropdown-item" data-id="community">社区交流</div>
+    <div class="full-dropdown-item active" data-id="mod">MC联机</div>
+    <div class="full-dropdown-item" data-id="launcher">泰拉瑞亚联机</div>
+    <div class="full-dropdown-item" data-id="guide">星露谷联机</div>
+    <div class="full-dropdown-item" data-id="faq">饥荒联机</div>
+    <div class="full-dropdown-item" data-id="community">待开发</div>
   </div>
   <div class="full-dropdown-right" id="dropdownRight">
-    <h3 class="full-dropdown-title">模组资源</h3>
-    <p class="full-dropdown-desc">浏览Kurlet优质模组资源，丰富你的游戏体验，适配当前版本。</p>
+    <h3 class="full-dropdown-title">MC联机</h3>
+    <p class="full-dropdown-desc">简简单单的服务器，没啥亮眼。</p>
     <a class="full-dropdown-link" href="https://kurlet.com" target="_blank">前往查看</a>
   </div>
 </div>
@@ -550,42 +550,42 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && eggModal.classList.contains('show')) closeEggVideo();
 });
 
-// ===== 全屏下拉菜单逻辑 =====
+
 const moreToggle = document.getElementById('moreToggle');
 const fullDropdown = document.getElementById('fullDropdown');
 const leftItems = document.querySelectorAll('.full-dropdown-item');
 const dropdownRight = document.getElementById('dropdownRight');
 
-// 菜单数据
+
 const menuData = {
   mod: {
-    title: "模组资源",
-    desc: "浏览Kurlet优质模组资源，丰富你的游戏体验，适配当前版本。",
+    title: "MC联机",
+    desc: "简简单单的服务器，没啥亮眼。",
     link: "https://kurlet.com"
   },
   launcher: {
-    title: "启动器下载",
-    desc: "下载官方Kurlet启动器，一键安装并快速进入游戏。",
+    title: "泰拉瑞亚联机",
+    desc: "还没开始做，目前只有MC联机。",
     link: "https://kurlet.com"
   },
   guide: {
-    title: "使用教程",
-    desc: "查看详细配置教程，解决初次使用遇到的基础问题。",
+    title: "星露谷联机",
+    desc: "其实你完全可以走steam联机的对吧。",
     link: "https://kurlet.com"
   },
   faq: {
-    title: "常见问题",
-    desc: "查阅常见问题解答，快速排查闪退、卡顿、连接异常等问题。",
+    title: "饥荒联机",
+    desc: "还没搞，其实steam联机也不是不行。",
     link: "https://kurlet.com"
   },
   community: {
-    title: "社区交流",
-    desc: "加入Kurlet官方社区，和玩家交流玩法、分享作品。",
+    title: "待开发",
+    desc: "没准有个大的。",
     link: "https://kurlet.com"
   }
 };
 
-// 更新右侧面板内容
+
 function updatePanel(id) {
   const data = menuData[id];
   dropdownRight.innerHTML = `
@@ -597,27 +597,27 @@ function updatePanel(id) {
   document.querySelector(`.full-dropdown-item[data-id="${id}"]`).classList.add('active');
 }
 
-// 切换菜单状态
+
 function toggleDropdown() {
   fullDropdown.classList.toggle('open');
 }
 moreToggle.addEventListener('click', toggleDropdown);
 
-// 左侧菜单点击切换
+
 leftItems.forEach(item => {
   item.addEventListener('click', () => {
     updatePanel(item.dataset.id);
   });
 });
 
-// ESC键关闭
+
 document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape') {
     fullDropdown.classList.remove('open');
   }
 });
 
-// 点击页面非菜单区域关闭
+
 document.addEventListener('click', (e) => {
   if (!fullDropdown.contains(e.target) && e.target !== moreToggle) {
     fullDropdown.classList.remove('open');
