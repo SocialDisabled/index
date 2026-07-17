@@ -77,9 +77,13 @@ body {
   display: grid;
   grid-template-columns: 1fr 4fr;
   color: #fff;
+  pointer-events: none;
+  visibility: hidden;
 }
 .full-dropdown.open {
   transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
 }
 
 
