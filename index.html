@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Kurlet</title>
 
-
 <link rel="preload" href="photo/44.webp" as="image">
 <link rel="preload" href="photo/11.webp" as="image">
 <link rel="preload" href="photo/22.webp" as="image">
@@ -55,83 +54,87 @@ body {
   text-decoration: none;
   font-size: 14px;
   opacity: 0.9;
+  cursor: pointer;
 }
 .top-nav a:hover{
   opacity: 1;
 }
 
-/* 下拉菜单容器 */
-.more-dropdown-wrap {
-  position: relative;
-}
-/* 下拉面板：占1/5屏幕高度 */
-.more-dropdown-panel {
-  position: absolute;
+/* 全屏下拉菜单容器 */
+.full-dropdown {
+  position: fixed;
   top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  max-width: 1000px;
-  height: 20vh; /* 1/5屏幕高度 */
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 12px;
-  display: none;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 60px);
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 998;
+  /* 平滑下拉动画 */
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+  display: grid;
   grid-template-columns: 1fr 4fr;
   color: #fff;
-  overflow: hidden;
-  z-index: 1000;
 }
-/* 左侧导航模块 */
-.dropdown-left {
-  background: rgba(255,255,255,0.08);
+.full-dropdown.open {
+  transform: translateY(0);
+}
+
+/* 左侧菜单区域 */
+.full-dropdown-left {
+  background: rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
 }
-.dropdown-left-item {
-  padding: 0 20px;
+.full-dropdown-item {
+  padding: 0 30px;
   flex: 1;
   display: flex;
   align-items: center;
   cursor: pointer;
-  border-left: 3px solid transparent;
+  border-left: 4px solid transparent;
   transition: 0.2s;
+  font-size: 16px;
 }
-.dropdown-left-item.active {
+.full-dropdown-item.active {
   background: rgba(255,255,255,0.15);
   border-left-color: #ffd288;
 }
-.dropdown-left-item:hover {
+.full-dropdown-item:hover {
   background: rgba(255,255,255,0.1);
 }
-/* 右侧详情面板 */
-.dropdown-right {
-  padding: 24px;
+
+/* 右侧详情区域 */
+.full-dropdown-right {
+  padding: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.dropdown-desc-title {
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-.dropdown-desc-text {
-  font-size: 14px;
-  opacity: 0.8;
+.full-dropdown-title {
+  font-size: 26px;
   margin-bottom: 16px;
-  line-height: 1.6;
 }
-.dropdown-desc-link {
+.full-dropdown-desc {
+  font-size: 16px;
+  opacity: 0.85;
+  margin-bottom: 24px;
+  line-height: 1.7;
+  max-width: 600px;
+}
+.full-dropdown-link {
   display: inline-block;
-  padding: 8px 20px;
+  padding: 12px 30px;
+  border-radius: 30px;
   background: #ffd288;
   color: #000;
-  border-radius: 24px;
   text-decoration: none;
+  font-size: 16px;
   width: fit-content;
 }
-.dropdown-desc-link:hover {
+.full-dropdown-link:hover {
   background: #ffdfaa;
 }
 
@@ -142,15 +145,18 @@ body {
   .top-nav a {
     font-size: 12px;
   }
-  .more-dropdown-panel {
-    width: 96%;
+  .full-dropdown {
     grid-template-columns: 1fr 2fr;
   }
-  .dropdown-desc-title {
-    font-size: 16px;
+  .full-dropdown-title {
+    font-size: 20px;
   }
-  .dropdown-desc-text {
-    font-size: 12px;
+  .full-dropdown-desc {
+    font-size: 14px;
+  }
+  .full-dropdown-item {
+    padding: 0 15px;
+    font-size: 14px;
   }
 }
 
@@ -315,7 +321,6 @@ body {
   }
 }
 
-
 .egg-modal {
   position: fixed;
   inset: 0;
@@ -359,7 +364,6 @@ body {
   background: rgba(255,255,255,0.3);
 }
 
-
 .secret-egg {
   position: fixed;
   left: 8px;
@@ -381,7 +385,6 @@ body {
 
 <div class="bg-fixed"></div>
 
-
 <a href="text.html" class="secret-egg">·</a>
 
 <div class="top-nav">
@@ -390,25 +393,24 @@ body {
   <a href="#">下载</a>
   <a href="#">支持</a>
   <a href="index.html">主页</a>
-  <div class="more-dropdown-wrap">
-    <a class="more-btn" href="javascript:void(0)">更多</a>
-    <div class="more-dropdown-panel">
-      <div class="dropdown-left">
-        <div class="dropdown-left-item active" data-id="mod">模组资源</div>
-        <div class="dropdown-left-item" data-id="launcher">启动器下载</div>
-        <div class="dropdown-left-item" data-id="guide">使用教程</div>
-        <div class="dropdown-left-item" data-id="faq">常见问题</div>
-        <div class="dropdown-left-item" data-id="community">社区交流</div>
-      </div>
-      <div class="dropdown-right" id="dropdownRight">
-        <h3 class="dropdown-desc-title">模组资源</h3>
-        <p class="dropdown-desc-text">浏览Kurlet优质模组资源，丰富你的游戏体验，适配当前版本。</p>
-        <a class="dropdown-desc-link" href="https://kurlet.com" target="_blank">前往查看</a>
-      </div>
-    </div>
-  </div>
+  <a id="moreToggle">更多</a>
 </div>
 
+<!-- 全屏下拉面板 -->
+<div class="full-dropdown" id="fullDropdown">
+  <div class="full-dropdown-left">
+    <div class="full-dropdown-item active" data-id="mod">模组资源</div>
+    <div class="full-dropdown-item" data-id="launcher">启动器下载</div>
+    <div class="full-dropdown-item" data-id="guide">使用教程</div>
+    <div class="full-dropdown-item" data-id="faq">常见问题</div>
+    <div class="full-dropdown-item" data-id="community">社区交流</div>
+  </div>
+  <div class="full-dropdown-right" id="dropdownRight">
+    <h3 class="full-dropdown-title">模组资源</h3>
+    <p class="full-dropdown-desc">浏览Kurlet优质模组资源，丰富你的游戏体验，适配当前版本。</p>
+    <a class="full-dropdown-link" href="https://kurlet.com" target="_blank">前往查看</a>
+  </div>
+</div>
 
 <div class="wrap-box">
   
@@ -447,7 +449,6 @@ body {
   </div>
 </div>
 
-
 <div class="egg-modal" id="eggModal">
   <div class="egg-close" id="eggClose">&times;</div>
   <video id="eggVideo" src="video/rickroll.mp4" controls></video>
@@ -461,7 +462,6 @@ const dotsBox = document.querySelector('.slider-dots');
 const prevBtn = document.querySelector('.prev');
 const nextBtn = document.querySelector('.next');
 let timer;
-
 
 for(let i=0; i<total; i++){
   const dot = document.createElement('span');
@@ -491,6 +491,7 @@ function prev(){
   index--;
   if(index < 0) index = total - 1;
   changeSlide();
+  changeSlide();
 }
 
 nextBtn.onclick = next;
@@ -504,7 +505,6 @@ autoPlay();
 document.querySelector('.slider-box').onmouseenter = ()=> clearInterval(timer);
 document.querySelector('.slider-box').onmouseleave = autoPlay;
 
-
 const btn = document.querySelector('.btn-link');
 const eggModal = document.getElementById('eggModal');
 const eggVideo = document.getElementById('eggVideo');
@@ -515,7 +515,6 @@ let clickTimer = null;
 
 function openEggVideo() {
   eggModal.classList.add('show');
-  
   eggVideo.play().catch(err=>console.log("播放失败:",err));
   clickCount = 0;
 }
@@ -529,7 +528,6 @@ function closeEggVideo() {
 btn.addEventListener('click', function(e) {
   clickCount++;
   clearTimeout(clickTimer);
-
   clickTimer = setTimeout(() => {
     clickCount = 0;
   }, 3000);
@@ -543,7 +541,6 @@ btn.addEventListener('click', function(e) {
   }
 });
 
-
 eggClose.addEventListener('click', closeEggVideo);
 eggModal.addEventListener('click', e => {
   if (e.target === eggModal) closeEggVideo();
@@ -552,13 +549,13 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && eggModal.classList.contains('show')) closeEggVideo();
 });
 
-// ===== 下拉菜单逻辑 =====
-const moreWrap = document.querySelector('.more-dropdown-wrap');
-const morePanel = document.querySelector('.more-dropdown-panel');
-const leftItems = document.querySelectorAll('.dropdown-left-item');
+// ===== 全屏下拉菜单逻辑 =====
+const moreToggle = document.getElementById('moreToggle');
+const fullDropdown = document.getElementById('fullDropdown');
+const leftItems = document.querySelectorAll('.full-dropdown-item');
 const dropdownRight = document.getElementById('dropdownRight');
 
-// 各模块内容配置
+// 菜单数据
 const menuData = {
   mod: {
     title: "模组资源",
@@ -587,31 +584,43 @@ const menuData = {
   }
 };
 
-// 更新右侧面板
+// 更新右侧面板内容
 function updatePanel(id) {
   const data = menuData[id];
   dropdownRight.innerHTML = `
-    <h3 class="dropdown-desc-title">${data.title}</h3>
-    <p class="dropdown-desc-text">${data.desc}</p>
-    <a class="dropdown-desc-link" href="${data.link}" target="_blank">前往查看</a>
+    <h3 class="full-dropdown-title">${data.title}</h3>
+    <p class="full-dropdown-desc">${data.desc}</p>
+    <a class="full-dropdown-link" href="${data.link}" target="_blank">前往查看</a>
   `;
   leftItems.forEach(item => item.classList.remove('active'));
-  document.querySelector(`.dropdown-left-item[data-id="${id}"]`).classList.add('active');
+  document.querySelector(`.full-dropdown-item[data-id="${id}"]`).classList.add('active');
 }
 
-// 鼠标悬浮显示
-moreWrap.addEventListener('mouseenter', () => {
-  morePanel.style.display = 'grid';
-});
-moreWrap.addEventListener('mouseleave', () => {
-  morePanel.style.display = 'none';
-});
+// 切换菜单状态
+function toggleDropdown() {
+  fullDropdown.classList.toggle('open');
+}
+moreToggle.addEventListener('click', toggleDropdown);
 
-// 左侧点击切换内容
+// 左侧菜单点击切换
 leftItems.forEach(item => {
   item.addEventListener('click', () => {
     updatePanel(item.dataset.id);
   });
+});
+
+// ESC键关闭
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape') {
+    fullDropdown.classList.remove('open');
+  }
+});
+
+// 点击页面非菜单区域关闭
+document.addEventListener('click', (e) => {
+  if (!fullDropdown.contains(e.target) && e.target !== moreToggle) {
+    fullDropdown.classList.remove('open');
+  }
 });
 </script>
 </body>
