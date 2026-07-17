@@ -60,11 +60,96 @@ body {
   opacity: 1;
 }
 
+/* 下拉菜单容器 */
+.more-dropdown-wrap {
+  position: relative;
+}
+/* 下拉面板：占1/5屏幕高度 */
+.more-dropdown-panel {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1000px;
+  height: 20vh; /* 1/5屏幕高度 */
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  display: none;
+  grid-template-columns: 1fr 4fr;
+  color: #fff;
+  overflow: hidden;
+  z-index: 1000;
+}
+/* 左侧导航模块 */
+.dropdown-left {
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+}
+.dropdown-left-item {
+  padding: 0 20px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: 0.2s;
+}
+.dropdown-left-item.active {
+  background: rgba(255,255,255,0.15);
+  border-left-color: #ffd288;
+}
+.dropdown-left-item:hover {
+  background: rgba(255,255,255,0.1);
+}
+/* 右侧详情面板 */
+.dropdown-right {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dropdown-desc-title {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+.dropdown-desc-text {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.dropdown-desc-link {
+  display: inline-block;
+  padding: 8px 20px;
+  background: #ffd288;
+  color: #000;
+  border-radius: 24px;
+  text-decoration: none;
+  width: fit-content;
+}
+.dropdown-desc-link:hover {
+  background: #ffdfaa;
+}
+
 @media (max-width: 720px) {
   .top-nav {
     gap: 12px;
   }
   .top-nav a {
+    font-size: 12px;
+  }
+  .more-dropdown-panel {
+    width: 96%;
+    grid-template-columns: 1fr 2fr;
+  }
+  .dropdown-desc-title {
+    font-size: 16px;
+  }
+  .dropdown-desc-text {
     font-size: 12px;
   }
 }
@@ -300,12 +385,28 @@ body {
 <a href="text.html" class="secret-egg">·</a>
 
 <div class="top-nav">
-  <a href="gallery.html">图片</a >
-  <a href="#">视频</a >
-  <a href="#">下载</a >
-  <a href="#">支持</a >
-  <a href="index.html">主页</a >
-  <a href="#">获取启动器</a >
+  <a href="gallery.html">图片</a>
+  <a href="#">视频</a>
+  <a href="#">下载</a>
+  <a href="#">支持</a>
+  <a href="index.html">主页</a>
+  <div class="more-dropdown-wrap">
+    <a class="more-btn" href="javascript:void(0)">更多</a>
+    <div class="more-dropdown-panel">
+      <div class="dropdown-left">
+        <div class="dropdown-left-item active" data-id="mod">模组资源</div>
+        <div class="dropdown-left-item" data-id="launcher">启动器下载</div>
+        <div class="dropdown-left-item" data-id="guide">使用教程</div>
+        <div class="dropdown-left-item" data-id="faq">常见问题</div>
+        <div class="dropdown-left-item" data-id="community">社区交流</div>
+      </div>
+      <div class="dropdown-right" id="dropdownRight">
+        <h3 class="dropdown-desc-title">模组资源</h3>
+        <p class="dropdown-desc-text">浏览Kurlet优质模组资源，丰富你的游戏体验，适配当前版本。</p>
+        <a class="dropdown-desc-link" href="https://kurlet.com" target="_blank">前往查看</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -325,10 +426,10 @@ body {
     </div>
     <div class="slider-mask"></div>
     <div class="slider-text">
-      <p>Kurlet引导页面官网</p >
+      <p>Kurlet引导页面官网</p>
       <h2>欢迎访问</h2>
      
-      <a class="btn-link" href="#main">了解更多</a >
+      <a class="btn-link" href="#main">了解更多</a>
     </div>
     <button class="slider-btn prev">&lt;</button>
     <button class="slider-btn next">&gt;</button>
@@ -341,7 +442,7 @@ body {
     <h3>这是一个官网</h3>
     <h1>天不生我唐人海，万古如长夜</h1>
     <h3>天不生，妈妈生的</h3>
-    <a href="https://mc.kurlet.com" color: block;" target="_blank">测试中！！！！
+    <a href="https://mc.kurlet.com" target="_blank">测试中！！！！
 </a>
   </div>
 </div>
@@ -449,6 +550,68 @@ eggModal.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && eggModal.classList.contains('show')) closeEggVideo();
+});
+
+// ===== 下拉菜单逻辑 =====
+const moreWrap = document.querySelector('.more-dropdown-wrap');
+const morePanel = document.querySelector('.more-dropdown-panel');
+const leftItems = document.querySelectorAll('.dropdown-left-item');
+const dropdownRight = document.getElementById('dropdownRight');
+
+// 各模块内容配置
+const menuData = {
+  mod: {
+    title: "模组资源",
+    desc: "浏览Kurlet优质模组资源，丰富你的游戏体验，适配当前版本。",
+    link: "https://kurlet.com"
+  },
+  launcher: {
+    title: "启动器下载",
+    desc: "下载官方Kurlet启动器，一键安装并快速进入游戏。",
+    link: "https://kurlet.com"
+  },
+  guide: {
+    title: "使用教程",
+    desc: "查看详细配置教程，解决初次使用遇到的基础问题。",
+    link: "https://kurlet.com"
+  },
+  faq: {
+    title: "常见问题",
+    desc: "查阅常见问题解答，快速排查闪退、卡顿、连接异常等问题。",
+    link: "https://kurlet.com"
+  },
+  community: {
+    title: "社区交流",
+    desc: "加入Kurlet官方社区，和玩家交流玩法、分享作品。",
+    link: "https://kurlet.com"
+  }
+};
+
+// 更新右侧面板
+function updatePanel(id) {
+  const data = menuData[id];
+  dropdownRight.innerHTML = `
+    <h3 class="dropdown-desc-title">${data.title}</h3>
+    <p class="dropdown-desc-text">${data.desc}</p>
+    <a class="dropdown-desc-link" href="${data.link}" target="_blank">前往查看</a>
+  `;
+  leftItems.forEach(item => item.classList.remove('active'));
+  document.querySelector(`.dropdown-left-item[data-id="${id}"]`).classList.add('active');
+}
+
+// 鼠标悬浮显示
+moreWrap.addEventListener('mouseenter', () => {
+  morePanel.style.display = 'grid';
+});
+moreWrap.addEventListener('mouseleave', () => {
+  morePanel.style.display = 'none';
+});
+
+// 左侧点击切换内容
+leftItems.forEach(item => {
+  item.addEventListener('click', () => {
+    updatePanel(item.dataset.id);
+  });
 });
 </script>
 </body>
